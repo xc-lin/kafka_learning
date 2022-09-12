@@ -1,6 +1,8 @@
 package com.lxc.producer;
 
-import org.apache.kafka.clients.producer.*;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Properties;
@@ -9,7 +11,7 @@ import java.util.Properties;
  * @author Frank_lin
  * @date 2022/9/12
  */
-public class CustomProducerCallback {
+public class CustomProducer {
     public static void main(String[] args) {
         // 配置
         Properties properties = new Properties();
@@ -25,14 +27,7 @@ public class CustomProducerCallback {
 
         // 发送数据
         for (int i = 0; i < 5; i++) {
-            kafkaProducer.send(new ProducerRecord<>("first", "linxc" + i), new Callback() {
-                @Override
-                public void onCompletion(RecordMetadata recordMetadata, Exception e) {
-                    if (e == null) {
-                        System.out.println("主题：" + recordMetadata.topic() + " 分区：" + recordMetadata.partition());
-                    }
-                }
-            });
+            kafkaProducer.send(new ProducerRecord<>("first", "linxc" + i));
         }
         // 关闭资源
         kafkaProducer.close();
